@@ -1,0 +1,10 @@
+Package: tsm
+Type: Package
+Title: Time Series Modelling
+Version: 0.1.0
+Author: Kevin Kotze
+Maintainer: Kevin Kotze <kevinkotze@gmail.com>
+Description: Routine that accompany a course on TIme Series Modelling
+License: MIT
+Encoding: UTF-8
+LazyData: true
