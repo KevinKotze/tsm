@@ -1,7 +1,14 @@
-# Amended version of acf2() by D.S. Stoffer 
-# Aug 2014
+#' Autocorrelation and partial autocorrealtion function.
+#' 
+#' @param series A numeric, time series, or xts variable.
+#' @param max.lag A number that represents the maximum lag order for the ACF and PACF.
+#' @param main Plot title.
+#' @return The respective ACF and PACF functions.
+#' @examples
+#' ac(rnorm(100), max.lag = 20, main = "Persistence")
 
-ac  <- function(series,max.lag=NULL,main=NULL){
+
+ac  <- function(series,max.lag=18,main=NULL){
    num=length(series)
    if (num > 49 & is.null(max.lag)) max.lag=ceiling(10+sqrt(num))
    if (num < 50 & is.null(max.lag))  max.lag=floor(5*log10(num))

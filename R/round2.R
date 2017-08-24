@@ -1,3 +1,11 @@
+#' Round numbers following normal convention.
+#' 
+#' @param x A numeric scalar.
+#' @param n The order for the rounding.
+#' @return The result that would be equivalent to Matlab.
+#' @examples
+#' 
+
 round2 = function(x,n) {
   # where 0.5 rounds up to 1 and 0.4 to 0
   posneg = sign(x)
