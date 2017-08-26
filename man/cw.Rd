@@ -2,7 +2,7 @@
 % Please edit documentation in R/cw.R
 \name{cw}
 \alias{cw}
-\title{Clark-West (2007) Approximately normal tests for equal predictive accuracy in nested models.}
+\title{Clark-West (2007) approximate normality tests for equal predictive accuracy in nested models.}
 \usage{
 cw(e.m1, e.m2, yf.m1, yf.m2)
 }
@@ -19,5 +19,5 @@ cw(e.m1, e.m2, yf.m1, yf.m2)
 Clark-West statistics.
 }
 \description{
-Clark-West (2007) Approximately normal tests for equal predictive accuracy in nested models.
+Clark-West (2007) approximate normality tests for equal predictive accuracy in nested models.
 }

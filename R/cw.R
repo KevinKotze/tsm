@@ -1,5 +1,5 @@
-#' Clark-West (2007) Approximately normal tests for equal predictive accuracy in nested models.
-#' 
+#' Clark-West (2007) approximate normality tests for equal predictive accuracy in nested models.
+#'
 #' @param e.m1 Errors from model 1.
 #' @param e.m2 Errors from model 2.
 #' @param yf.m1 Forecasts for model 1.
@@ -9,7 +9,7 @@
 
 
 cw <- function(e.m1,e.m2,yf.m1,yf.m2){
-  
+
   nw <- function(y,qn){
     #input: y is a T*k vector and qn is the truncation lag
     #output: the newey west HAC covariance estimator
@@ -24,7 +24,7 @@ cw <- function(e.m1,e.m2,yf.m1,yf.m2){
     }
     return(as.numeric(G0))
   }
-  
+
   P <- length(e.m1)
   froll.adj <- e.m1^2-(e.m2^2-(yf.m1-yf.m2)^2)
   varfroll.adj <- nw(froll.adj,1)

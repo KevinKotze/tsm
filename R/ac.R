@@ -1,5 +1,5 @@
 #' Autocorrelation and partial autocorrealtion function.
-#' 
+#'
 #' @param series A numeric, time series, or xts variable.
 #' @param max.lag A number that represents the maximum lag order for the ACF and PACF.
 #' @param main Plot title.
@@ -24,7 +24,7 @@ ac  <- function(series,max.lag=18,main=NULL){
    old.par <- par(no.readonly = TRUE)
    par(mfrow=c(1,2), mar = c(2.5,2.5,0.9,1),
        oma = c(1,1.2,1,1), mgp = c(1.5,0.6,0))
-   
+
    old.par <- par(no.readonly = TRUE)
    par(mfrow=c(1,2), mar = c(3,3.2,0.9,1),
        oma = c(1,1.2,1,1), mgp = c(2,0.6,0), cex=0.75)
@@ -37,11 +37,11 @@ ac  <- function(series,max.lag=18,main=NULL){
 
    if (is.null(main)){ }else{
      mtext(main, outer=TRUE,font=2)}
-   
-   on.exit(par(old.par))  
-#   ACF<-round(ACF,2); PACF<-round(PACF,2)    
-   res=(cbind(ACF, PACF)) 
-   return(res)
+
+   on.exit(par(old.par))
+#   ACF<-round(ACF,2); PACF<-round(PACF,2)
+   res=(cbind(ACF, PACF))
+   #return(res)
    }
 
-#acf3(rnorm(100))
+#ac(rnorm(100))
