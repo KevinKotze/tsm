@@ -64,12 +64,12 @@ gts_ur<-function(series)
   if (res.trend[1,1] > res.trend[1,3]) {
     cat("Cannot reject null of unit root at 5%", "\n")
   }else cat("Able to reject null of unit root at 5%", "\n")
+    if (res.trend[2,1] < res.trend[2,3]) {
+    cat("Cannot reject null of no constant and no trend at 5%", "\n")
+  }else cat("Able to reject null of no constant and no trend at 5%", "\n")
   if (res.trend[3,1] < res.trend[3,3]) {
     cat("Cannot reject null of no trend at 5%", "\n")
   }else cat("Able to reject null of no trend at 5%", "\n")
-  if (res.trend[2,1] < res.trend[2,3]) {
-    cat("Cannot reject null of no constant and no trend at 5%", "\n")
-  }else cat("Able to reject null of no constant and no trend at 5%", "\n")
   cat(" ", "\n")
 
   cat("## ADF with constrant ##", "\n")
