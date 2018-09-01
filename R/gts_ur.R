@@ -13,8 +13,8 @@ gts_ur<-function(series)
   res.trend <- cbind(t(round(tstat.trend,2)),cv.trend)
   nam.trend <- rownames(res.trend)
   nam.trend[agrep("tau", nam.trend)] <- "pi"
-  nam.trend[agrep("phi2", nam.trend)] <- "varphi2"
-  nam.trend[agrep("phi3", nam.trend)] <- "varphi3"
+  nam.trend[grep("phi2", nam.trend)] <- "varphi2"
+  nam.trend[grep("phi3", nam.trend)] <- "varphi3"
   rownames(res.trend) <- nam.trend
 
   ur.drift <- ur.df(series, type='drift', selectlags = c("AIC"))
@@ -23,7 +23,7 @@ gts_ur<-function(series)
   res.drift <- cbind(t(round(tstat.drift,2)),cv.drift)
   nam.drift <- rownames(res.drift)
   nam.drift[agrep("tau", nam.drift)] <- "pi"
-  nam.drift[agrep("phi1", nam.drift)] <- "varphi1"
+  nam.drift[grep("phi1", nam.drift)] <- "varphi1"
   rownames(res.drift) <- nam.drift
 
 
