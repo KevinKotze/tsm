@@ -28,10 +28,10 @@ ac  <- function(series,max.lag=18,main=NULL){
    old.par <- par(no.readonly = TRUE)
    par(mfrow=c(1,2), mar = c(3,3.2,0.9,1),
        oma = c(1,1.2,1,1), mgp = c(2,0.6,0), cex=0.75)
-   barplot(ACF, ylab='ACF', xlab='LAG', ylim=c(minu,1), col='#e6186d', border=NA, names.arg=LAG)
+   barplot(ACF, ylab='ACF', xlab='LAG', ylim=c(minu,1), col='#f23500ff', border=NA, names.arg=LAG)
     box()
     abline(h=c(0,L,U), lty=c(1,3,3), lwd = 2.5, col="darkgrey")
-   barplot(PACF, ylab='PACF', xlab='LAG', ylim=c(minu,1), col='#e6186d', border=NA, names.arg=LAG)
+   barplot(PACF, ylab='PACF', xlab='LAG', ylim=c(minu,1), col='#f23500ff', border=NA, names.arg=LAG)
     box()
     abline(h=c(0,L,U), lty=c(1,3,3), lwd = 2.5, col="darkgrey")
 
