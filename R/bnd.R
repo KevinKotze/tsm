@@ -17,7 +17,7 @@ yl[,1] = c(0,yd)
 for (i in 2:nlag){
   yl[,i] = c(0,yl[1:(length(y)-1),i-1])
 }
-x=yl[(nlag+1):(length(y)-1),1:8]
+x=yl[(nlag+1):(length(y)-1),1:nlag]
 yy=matrix(yd[(1+nlag):length(yd),],ncol=1)
 
 # OLS
