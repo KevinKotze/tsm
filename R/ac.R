@@ -1,47 +1,101 @@
-#' Autocorrelation and partial autocorrealtion function.
+#' Autocorrelation and partial autocorrelation function.
 #'
-#' @param series A numeric, time series, or xts variable.
-#' @param max.lag A number that represents the maximum lag order for the ACF and PACF.
-#' @param main Plot title.
+#' @import tibble dplyr ggplot2 patchwork
+#' @param data A numeric, time series, or xts variable.
+#' @param max_lag A number that represents the maximum lag order for the ACF and PACF.
+#' @param main_title Optional plot title.
+#' @param output Return data or not.
 #' @return The respective ACF and PACF functions.
 #' @examples
-#' ac(rnorm(100), max.lag = 20, main = "Persistence")
+#' ac(rnorm(100))
 
 
-ac  <- function(series,max.lag=18,main=NULL){
-   num=length(series)
-   if (num > 49 & is.null(max.lag)) max.lag=ceiling(10+sqrt(num))
-   if (num < 50 & is.null(max.lag))  max.lag=floor(5*log10(num))
-   if (max.lag > (num-1)) stop("Number of lags exceeds number of observations")
-   ACF=acf(series, max.lag, plot=FALSE)$acf[-1]
-   PACF=as.numeric(pacf(series, max.lag, plot=FALSE)$acf)
-   LAG=1:max.lag/frequency(series)
-   minA=min(ACF)
-   minP=min(PACF)
-   U=2/sqrt(num)
-   L=-U
-   minu=min(minA,minP,L)-.01
-   old.par <- par(no.readonly = TRUE)
-   par(mfrow=c(1,2), mar = c(2.5,2.5,0.9,1),
-       oma = c(1,1.2,1,1), mgp = c(1.5,0.6,0))
+ac  <- function(data, max_lag = NULL, main_title = NULL, output = NULL) {
 
-   old.par <- par(no.readonly = TRUE)
-   par(mfrow=c(1,2), mar = c(3,3.2,0.9,1),
-       oma = c(1,1.2,1,1), mgp = c(2,0.6,0), cex=0.75)
-   barplot(ACF, ylab='ACF', xlab='LAG', ylim=c(minu,1), col='#f23500ff', border=NA, names.arg=LAG)
-    box()
-    abline(h=c(0,L,U), lty=c(1,3,3), lwd = 2.5, col="darkgrey")
-   barplot(PACF, ylab='PACF', xlab='LAG', ylim=c(minu,1), col='#f23500ff', border=NA, names.arg=LAG)
-    box()
-    abline(h=c(0,L,U), lty=c(1,3,3), lwd = 2.5, col="darkgrey")
+  # colours
+  tsm_pal <- list(
+    default = tribble(~ colour, ~ hex,
+                      'blue', '#4682B4',
+                      'purple', '#B44683',
+                      'gold', '#B4A446',
+                      'darkblue','#31697E',
+                      'darkpurple','#7E315C'
+    ) |> deframe()
+  )
 
-   if (is.null(main)){ }else{
-     mtext(main, outer=TRUE,font=2)}
+  # confidence intervals
+  num <- length(data)
+  U <- 2 / sqrt(num)
+  L <- -U
 
-   on.exit(par(old.par))
-#   ACF<-round(ACF,2); PACF<-round(PACF,2)
-   res=(cbind(ACF, PACF))
-   #return(res)
-   }
+  # conditions
+  if (num > 49 & is.null(max_lag))
+    max_lag = ceiling(10 + sqrt(num))
+  if (num < 50 & is.null(max_lag))
+    max_lag = floor(5 * log10(num))
+  if (max_lag > (num - 1))
+    stop("Number of lags exceeds number of observations")
+
+  # calculations
+  cf <- tibble::tibble(
+    ACF = acf(data, max_lag, plot = FALSE)$acf[-1],
+    PACF = as.numeric(pacf(data, max_lag, plot = FALSE)$acf),
+    LAG = 1:max_lag
+  ) |>
+    dplyr::select(LAG, ACF, PACF)
+
+  # plot
+  p1 <- cf |>
+    ggplot2::ggplot() +
+    geom_bar(aes(x = LAG, y = ACF),
+             stat = "identity",
+             fill = tsm_pal$default[[2]]) +
+      theme_light() +
+      theme(
+        axis.title.x = element_blank(),
+        plot.title = element_text(hjust = 0.5),
+        axis.ticks.x = element_blank(),
+        plot.margin = margin(0.6, 0.6, 0.6, 0.6, "cm"),
+        legend.justification = c(0,1),
+        legend.position = 'none',
+        legend.title = element_blank()
+      ) +
+    expand_limits(y = c(-0.91, 0.91)) +
+    labs(y = "ACF", x = NULL) +
+    geom_hline(yintercept = c(U, L), linetype = "dashed",
+               color = tsm_pal$default[[3]], linewidth = 1)
+
+
+  p2 <- cf |>
+    ggplot2::ggplot() +
+    geom_bar(aes(x = LAG, y = PACF),
+             stat = "identity",
+             fill = tsm_pal$default[[2]]) +
+    theme_light() +
+    theme(
+      axis.title.x = element_blank(),
+      plot.title = element_text(hjust = 0.5),
+      axis.ticks.x = element_blank(),
+      plot.margin = margin(0.6, 0.6, 0.6, 0.6, "cm"),
+      legend.justification = c(0,1),
+      legend.position = 'none',
+      legend.title = element_blank()
+    ) +
+    expand_limits(y = c(-0.91, 0.91)) +
+    labs(y = "PACF", x = NULL) +
+    geom_hline(yintercept = c(U, L), linetype = "dashed",
+               color = tsm_pal$default[[3]], linewidth = 1)
+
+  cf_plot <- p1 + p2 +
+    plot_layout(nrow = 1, byrow = FALSE) +
+    plot_annotation(title = main_title)
+
+  if (is.null(output)) {
+    return(cf_plot)
+  } else {
+    return(list(cf_plot, cf))
+  }
+
+}
 
 #ac(rnorm(100))

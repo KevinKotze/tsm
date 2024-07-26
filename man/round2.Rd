@@ -17,6 +17,3 @@ The result that would be equivalent to Matlab.
 \description{
 Round numbers following normal convention.
 }
-\examples{
-
-}

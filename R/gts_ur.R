@@ -1,13 +1,14 @@
 #' General-to-Specific application of Dickey-Fuller (1981) Test.
 #'
-#' @param y A T*k vector of numeric values.
+#' @importFrom urca ur.df
+#' @param series A vector of numeric values.
 #' @return Summary of the results of the various tests.
 #' @examples
-#'
+#' gts_ur(rnorm(100))
 
 gts_ur<-function(series)
 {
-  ur.trend <- ur.df(series, type='trend', selectlags = c("AIC"))
+  ur.trend <- urca::ur.df(series, type='trend', selectlags = c("AIC"))
   tstat.trend <- ur.trend@teststat
   cv.trend <- ur.trend@cval
   res.trend <- cbind(t(round(tstat.trend,2)),cv.trend)
@@ -17,7 +18,7 @@ gts_ur<-function(series)
   nam.trend[grep("phi3", nam.trend)] <- "varphi3"
   rownames(res.trend) <- nam.trend
 
-  ur.drift <- ur.df(series, type='drift', selectlags = c("AIC"))
+  ur.drift <- urca::ur.df(series, type='drift', selectlags = c("AIC"))
   tstat.drift <- ur.drift@teststat
   cv.drift <- ur.drift@cval
   res.drift <- cbind(t(round(tstat.drift,2)),cv.drift)
@@ -26,8 +27,7 @@ gts_ur<-function(series)
   nam.drift[grep("phi1", nam.drift)] <- "varphi1"
   rownames(res.drift) <- nam.drift
 
-
-  ur.none <- ur.df(series, type='none', selectlags = c("AIC"))
+  ur.none <- urca::ur.df(series, type='none', selectlags = c("AIC"))
   tstat.none <- ur.none@teststat
   cv.none <- ur.none@cval
   res.none <- cbind(t(round(tstat.none,2)),cv.none)

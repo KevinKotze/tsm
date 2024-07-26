@@ -7,7 +7,7 @@
 gts_ur(series)
 }
 \arguments{
-\item{y}{A T*k vector of numeric values.}
+\item{series}{A vector of numeric values.}
 }
 \value{
 Summary of the results of the various tests.
@@ -16,5 +16,5 @@ Summary of the results of the various tests.
 General-to-Specific application of Dickey-Fuller (1981) Test.
 }
 \examples{
-
+gts_ur(rnorm(100))
 }

@@ -17,6 +17,3 @@ Values for the stochastic trend and the stationary cycle
 \description{
 Beveridge-Nelson decomposition
 }
-\examples{
-
-}

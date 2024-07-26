@@ -2,23 +2,25 @@
 % Please edit documentation in R/ac.R
 \name{ac}
 \alias{ac}
-\title{Autocorrelation and partial autocorrealtion function.}
+\title{Autocorrelation and partial autocorrelation function.}
 \usage{
-ac(series, max.lag = 18, main = NULL)
+ac(data, max_lag = NULL, main_title = NULL, output = NULL)
 }
 \arguments{
-\item{series}{A numeric, time series, or xts variable.}
+\item{data}{A numeric, time series, or xts variable.}
 
-\item{max.lag}{A number that represents the maximum lag order for the ACF and PACF.}
+\item{max_lag}{A number that represents the maximum lag order for the ACF and PACF.}
 
-\item{main}{Plot title.}
+\item{main_title}{Optional plot title.}
+
+\item{output}{Return data or not.}
 }
 \value{
 The respective ACF and PACF functions.
 }
 \description{
-Autocorrelation and partial autocorrealtion function.
+Autocorrelation and partial autocorrelation function.
 }
 \examples{
-ac(rnorm(100), max.lag = 20, main = "Persistence")
+ac(rnorm(100))
 }

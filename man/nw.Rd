@@ -17,6 +17,3 @@ Newey-West HAC covariance estimator (as derived in Hayashi).
 \description{
 Newey-West HAC covariance estimator.
 }
-\examples{
-
-}

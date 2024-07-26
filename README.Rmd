@@ -1,0 +1,30 @@
+---
+output: github_document
+---
+
+<!-- README.md is generated from README.Rmd. Please edit that file -->
+
+```{r, echo = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+## Time Series Modelling
+
+_<last updated on `r Sys.Date()`>_
+
+This R package contains a few routines that accompany a course on Time Series Modelling.
+
+## Installation
+
+To install the repository the current data from GitHub:
+
+```R
+pak::pak("KevinKotze/tsm")
+```
+
+## Disclaimer
+
+Please note that I'm in no way responsible for the results that may be produced using these routines, which are mostly wrapper functions. Researchers are encouraged to make use of other packages. 

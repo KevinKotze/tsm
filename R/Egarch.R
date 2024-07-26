@@ -55,23 +55,23 @@
   Egarch <- list(residuals = at, volatility = sigma.t)
 }
 
-glk <- function(par) {
-  rtn = read.table("tmp.txt")[, 1]
-  glk = 0
-  ht = var(rtn)
-  T = length(rtn)
-  if (T > 40)
-    ht = var(rtn[1:40])
-  at = rtn[1] - par[1]
-  for (i in 2:T) {
-    ept = rtn[i] - par[1]
-    at = c(at, ept)
-    eptm1 = at[i - 1] / sqrt(ht[i - 1])
-    lnht = par[2] + par[3] * (abs(eptm1) + par[4] * eptm1) + par[5] * log(ht[i -
-                                                                               1])
-    sig2t = exp(lnht)
-    ht = c(ht, sig2t)
-    glk = glk + 0.5 * (lnht + ept ^ 2 / sig2t)
-  }
-  glk
-}
+# glk <- function(par) {
+#   rtn = read.table("tmp.txt")[, 1]
+#   glk = 0
+#   ht = var(rtn)
+#   T = length(rtn)
+#   if (T > 40)
+#     ht = var(rtn[1:40])
+#   at = rtn[1] - par[1]
+#   for (i in 2:T) {
+#     ept = rtn[i] - par[1]
+#     at = c(at, ept)
+#     eptm1 = at[i - 1] / sqrt(ht[i - 1])
+#     lnht = par[2] + par[3] * (abs(eptm1) + par[4] * eptm1) + par[5] * log(ht[i -
+#                                                                                1])
+#     sig2t = exp(lnht)
+#     ht = c(ht, sig2t)
+#     glk = glk + 0.5 * (lnht + ept ^ 2 / sig2t)
+#   }
+#   glk
+# }
