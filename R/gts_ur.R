@@ -2,7 +2,10 @@
 #'
 #' @importFrom urca ur.df
 #' @param series A vector of numeric values.
+#'
 #' @return Summary of the results of the various tests.
+#' @export
+#'
 #' @examples
 #' gts_ur(rnorm(100))
 

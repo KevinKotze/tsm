@@ -6,19 +6,14 @@ Authors@R:
     person("Kevin", "Kotzé", , "kevinkotze@gmail.com", role = c("aut", "cre"),
            comment = c(ORCID = "0000-0002-7968-266X"))
 Maintainer: Kevin Kotze <kevinkotze@gmail.com>
-Description: Routines that accompany a course on Time Series Modelling
-License: `use_mit_license()`
+Description: Routines that accompany a course on Time Series Modelling.
+License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.3.1
+RoxygenNote: 7.3.2
 Imports:
     urca,
-    tibble,
-    dplyr,
-    ggplot2,
-    patchwork
-Depends:
     tibble,
     dplyr,
     ggplot2,

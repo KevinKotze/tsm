@@ -16,7 +16,7 @@ ac(data, max_lag = NULL, main_title = NULL, output = NULL)
 \item{output}{Return data or not.}
 }
 \value{
-The respective ACF and PACF functions.
+The ggplot plots for the respective ACF and PACF functions.
 }
 \description{
 Autocorrelation and partial autocorrelation function.

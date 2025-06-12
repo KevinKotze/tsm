@@ -4,7 +4,7 @@
 \alias{bnd}
 \title{Beveridge-Nelson decomposition}
 \usage{
-bnd(data, nlag)
+bnd(data, nlag = 8)
 }
 \arguments{
 \item{data}{A vector of first-order integrated numeric values}
@@ -16,4 +16,7 @@ Values for the stochastic trend and the stationary cycle
 }
 \description{
 Beveridge-Nelson decomposition
+}
+\examples{
+bnd(rnorm(100))
 }

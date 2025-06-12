@@ -4,7 +4,10 @@
 #' @param lag A number that represents the maximum lag order.
 #' @param differences Number of times data should be differenced.
 #' @param ... Optional input arguments.
+#'
 #' @return Vector of data that is the sample length as input.
+#' @export
+#'
 #' @examples
 #' dif(rnorm(100), 1, 1)
 

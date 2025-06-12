@@ -9,11 +9,14 @@ nw(y, qn)
 \arguments{
 \item{y}{A T*k vector of numeric values.}
 
-\item{qn}{A numberic scalar for the truncation lag.}
+\item{qn}{A numeric scalar for the truncation lag.}
 }
 \value{
 Newey-West HAC covariance estimator (as derived in Hayashi).
 }
 \description{
 Newey-West HAC covariance estimator.
+}
+\examples{
+nw(rnorm(100), 1)
 }

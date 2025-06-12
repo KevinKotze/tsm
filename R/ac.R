@@ -5,10 +5,12 @@
 #' @param max_lag A number that represents the maximum lag order for the ACF and PACF.
 #' @param main_title Optional plot title.
 #' @param output Return data or not.
-#' @return The respective ACF and PACF functions.
+#'
+#' @return The ggplot plots for the respective ACF and PACF functions.
+#' @export
+#'
 #' @examples
 #' ac(rnorm(100))
-
 
 ac  <- function(data, max_lag = NULL, main_title = NULL, output = NULL) {
 
@@ -22,6 +24,11 @@ ac  <- function(data, max_lag = NULL, main_title = NULL, output = NULL) {
                       'darkpurple','#7E315C'
     ) |> deframe()
   )
+
+  # global functions or variables
+  LAG <- integer()
+  ACF <- numeric()
+  PACF <- numeric()
 
   # confidence intervals
   num <- length(data)
@@ -37,40 +44,25 @@ ac  <- function(data, max_lag = NULL, main_title = NULL, output = NULL) {
     stop("Number of lags exceeds number of observations")
 
   # calculations
-  cf <- tibble::tibble(
-    ACF = acf(data, max_lag, plot = FALSE)$acf[-1],
-    PACF = as.numeric(pacf(data, max_lag, plot = FALSE)$acf),
+  cf <- tibble(
+    ACF = stats::acf(data, max_lag, plot = FALSE)$acf[-1],
+    PACF = as.numeric(stats::pacf(data, max_lag, plot = FALSE)$acf),
     LAG = 1:max_lag
   ) |>
     dplyr::select(LAG, ACF, PACF)
 
   # plot
   p1 <- cf |>
-    ggplot2::ggplot() +
+    ggplot() +
     geom_bar(aes(x = LAG, y = ACF),
              stat = "identity",
-             fill = tsm_pal$default[[2]]) +
-      theme_light() +
-      theme(
-        axis.title.x = element_blank(),
-        plot.title = element_text(hjust = 0.5),
-        axis.ticks.x = element_blank(),
-        plot.margin = margin(0.6, 0.6, 0.6, 0.6, "cm"),
-        legend.justification = c(0,1),
-        legend.position = 'none',
-        legend.title = element_blank()
-      ) +
-    expand_limits(y = c(-0.91, 0.91)) +
-    labs(y = "ACF", x = NULL) +
-    geom_hline(yintercept = c(U, L), linetype = "dashed",
-               color = tsm_pal$default[[3]], linewidth = 1)
-
-
-  p2 <- cf |>
-    ggplot2::ggplot() +
-    geom_bar(aes(x = LAG, y = PACF),
-             stat = "identity",
-             fill = tsm_pal$default[[2]]) +
+             fill = tsm_pal$default[[1]]) +
+    geom_hline(yintercept = c(U, L),
+               linetype = "dashed",
+               color = tsm_pal$default[[3]],
+               linewidth = 1) +
+    annotate(geom = "rect", xmin = 0, xmax = max_lag, ymin = L, ymax = U,
+             fill = tsm_pal$default[[3]], alpha = 0.1) +
     theme_light() +
     theme(
       axis.title.x = element_blank(),
@@ -82,9 +74,34 @@ ac  <- function(data, max_lag = NULL, main_title = NULL, output = NULL) {
       legend.title = element_blank()
     ) +
     expand_limits(y = c(-0.91, 0.91)) +
-    labs(y = "PACF", x = NULL) +
+    xlim(c(0, max_lag)) +
+    labs(y = "ACF", x = NULL)
+
+
+
+  p2 <- cf |>
+    ggplot() +
+    geom_bar(aes(x = LAG, y = PACF),
+             stat = "identity",
+             fill = tsm_pal$default[[1]]) +
     geom_hline(yintercept = c(U, L), linetype = "dashed",
-               color = tsm_pal$default[[3]], linewidth = 1)
+               color = tsm_pal$default[[3]], linewidth = 1) +
+    annotate(geom = "rect", xmin = 0, xmax = max_lag, ymin = L, ymax = U,
+             fill = tsm_pal$default[[3]], alpha = 0.1) +
+    theme_light() +
+    theme(
+      axis.title.x = element_blank(),
+      plot.title = element_text(hjust = 0.5),
+      axis.ticks.x = element_blank(),
+      plot.margin = margin(0.6, 0.6, 0.6, 0.6, "cm"),
+      legend.justification = c(0,1),
+      legend.position = 'none',
+      legend.title = element_blank()
+    ) +
+    expand_limits(y = c(-0.91, 0.91)) +
+    xlim(c(0, max_lag)) +
+    labs(y = "PACF", x = NULL)
+
 
   cf_plot <- p1 + p2 +
     plot_layout(nrow = 1, byrow = FALSE) +
@@ -98,4 +115,3 @@ ac  <- function(data, max_lag = NULL, main_title = NULL, output = NULL) {
 
 }
 
-#ac(rnorm(100))

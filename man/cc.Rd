@@ -18,7 +18,7 @@ cc(x, y, max_lag = NULL, main_title = NULL, output = NULL)
 \item{output}{Return data or not.}
 }
 \value{
-The respective ACF and PACF functions.
+The respective CCF functions.
 }
 \description{
 Cross correlation function that considers the relationship between two variables.

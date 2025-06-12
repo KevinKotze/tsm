@@ -21,3 +21,6 @@ Clark-West statistics.
 \description{
 Clark-West (2007) approximate normality tests for equal predictive accuracy in nested models.
 }
+\examples{
+cw(rnorm(100), rnorm(100), rnorm(100), rnorm(100))
+}

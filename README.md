@@ -3,7 +3,7 @@
 
 ## Time Series Modelling
 
-*\<last updated on 2024-07-26\>*
+*\<last updated on 2025-06-12\>*
 
 This R package contains a few routines that accompany a course on Time
 Series Modelling.
