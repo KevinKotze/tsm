@@ -1,7 +1,7 @@
 Package: tsm
 Type: Package
 Title: Time Series Modelling
-Version: 0.0.0.1
+Version: 0.0.0.2
 Authors@R: 
     person("Kevin", "Kotzé", , "kevinkotze@gmail.com", role = c("aut", "cre"),
            comment = c(ORCID = "0000-0002-7968-266X"))
