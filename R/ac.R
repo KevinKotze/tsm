@@ -32,7 +32,7 @@ ac  <- function(data, max_lag = NULL, main_title = NULL, output = NULL) {
 
   # confidence intervals
   num <- length(data)
-  U <- 2 / sqrt(num)
+  U <- 1.96 / sqrt(num) |> as.numeric()
   L <- -U
 
   # conditions
@@ -45,13 +45,13 @@ ac  <- function(data, max_lag = NULL, main_title = NULL, output = NULL) {
 
   # calculations
   cf <- tibble(
-    ACF = stats::acf(data, max_lag, plot = FALSE)$acf[-1],
-    PACF = as.numeric(stats::pacf(data, max_lag, plot = FALSE)$acf),
-    LAG = 1:max_lag
+    ACF = stats::acf(data, max_lag, plot = FALSE)$acf[-1] |> as.numeric(),
+    PACF = stats::pacf(data, max_lag, plot = FALSE)$acf |> as.numeric(),
+    LAG = 1:max_lag |> as.integer()
   ) |>
     dplyr::select(LAG, ACF, PACF)
 
-  # plot
+  # plot acf
   p1 <- cf |>
     ggplot() +
     geom_bar(aes(x = LAG, y = ACF),
@@ -61,7 +61,7 @@ ac  <- function(data, max_lag = NULL, main_title = NULL, output = NULL) {
                linetype = "dashed",
                color = tsm_pal$default[[3]],
                linewidth = 1) +
-    annotate(geom = "rect", xmin = 0, xmax = max_lag, ymin = L, ymax = U,
+    annotate(geom = "rect", xmin = 0, xmax = max_lag + 1, ymin = L, ymax = U,
              fill = tsm_pal$default[[3]], alpha = 0.1) +
     theme_light() +
     theme(
@@ -74,11 +74,10 @@ ac  <- function(data, max_lag = NULL, main_title = NULL, output = NULL) {
       legend.title = element_blank()
     ) +
     expand_limits(y = c(-0.91, 0.91)) +
-    xlim(c(0, max_lag)) +
     labs(y = "ACF", x = NULL)
 
 
-
+  # plot pacf
   p2 <- cf |>
     ggplot() +
     geom_bar(aes(x = LAG, y = PACF),
@@ -86,7 +85,7 @@ ac  <- function(data, max_lag = NULL, main_title = NULL, output = NULL) {
              fill = tsm_pal$default[[1]]) +
     geom_hline(yintercept = c(U, L), linetype = "dashed",
                color = tsm_pal$default[[3]], linewidth = 1) +
-    annotate(geom = "rect", xmin = 0, xmax = max_lag, ymin = L, ymax = U,
+    annotate(geom = "rect", xmin = 0, xmax = max_lag + 1, ymin = L, ymax = U,
              fill = tsm_pal$default[[3]], alpha = 0.1) +
     theme_light() +
     theme(
@@ -99,13 +98,11 @@ ac  <- function(data, max_lag = NULL, main_title = NULL, output = NULL) {
       legend.title = element_blank()
     ) +
     expand_limits(y = c(-0.91, 0.91)) +
-    xlim(c(0, max_lag)) +
     labs(y = "PACF", x = NULL)
 
-
-  cf_plot <- p1 + p2 +
-    plot_layout(nrow = 1, byrow = FALSE) +
-    plot_annotation(title = main_title)
+  # combine plots with patchhwork
+  cf_plot <- patchwork::wrap_plots(p1, p2, nrow = 1, byrow = FALSE) +
+    patchwork::plot_annotation(title = main_title)
 
   if (is.null(output)) {
     return(cf_plot)

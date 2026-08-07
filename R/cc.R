@@ -20,30 +20,23 @@ cc  <- function(x,
                 output = NULL) {
   # colours
   tsm_pal <- list(
-    default = tribble(
-      ~ colour,
-      ~ hex,
-      'blue',
-      '#4682B4',
-      'purple',
-      '#B44683',
-      'gold',
-      '#B4A446',
-      'darkblue',
-      '#31697E',
-      'darkpurple',
-      '#7E315C'
+    default = tribble(~ colour, ~ hex,
+                      'blue', '#4682B4',
+                      'purple', '#B44683',
+                      'gold', '#B4A446',
+                      'darkblue','#31697E',
+                      'darkpurple','#7E315C'
     ) |> deframe()
   )
 
   # global functions or variables
   LAG <- integer()
   CCF <- numeric()
-  U <- numeric()
-  L <- numeric()
 
-  # number of observations
+  # confidence intervals
   num <- length(x)
+  U <- 1.96 / sqrt(num) |> as.numeric()
+  L <- -U
 
   # conditions
   if (num > 49 & is.null(max_lag))
@@ -56,47 +49,38 @@ cc  <- function(x,
   # calculations
   tmp <- stats::ccf(x, y, max_lag, plot = FALSE)
 
-  # confidence intervals - Enders 2014
-  cf <- tibble(LAG = tmp$lag[, 1, 1], CCF = tmp$acf[, 1, 1], ) %>%
-    filter(LAG >= 0) %>%
-    mutate(U = 2 * ((num - 0:max_lag)^(-1 / 2)), L = -U)
+  cf <- tibble(LAG = tmp$lag[, 1, 1] |> as.integer(),
+               CCF = tmp$acf[, 1, 1] |> as.numeric() ) |>
+    filter(LAG >= 0)
 
   # plot
-  p1 <- cf %>%
+  p1 <- cf |>
     ggplot() +
     geom_bar(aes(x = LAG, y = CCF),
              stat = "identity",
              fill = tsm_pal$default[[1]]) +
-    geom_line(
-      aes(x = LAG, y = U),
-      stat = "identity",
-      colour = tsm_pal$default[[3]],
-      linetype = "dashed",
-      linewidth = 1
-    ) +
-    geom_line(
-      aes(x = LAG, y = L),
-      stat = "identity",
-      colour = tsm_pal$default[[3]],
-      linetype = "dashed",
-      linewidth = 1
-    ) +
+    geom_hline(yintercept = c(U, L),
+               linetype = "dashed",
+               color = tsm_pal$default[[3]],
+               linewidth = 1) +
+    annotate(geom = "rect", xmin = -1, xmax = max_lag + 1, ymin = L, ymax = U,
+             fill = tsm_pal$default[[3]], alpha = 0.1) +
     theme_light() +
     theme(
       axis.title.x = element_blank(),
       plot.title = element_text(hjust = 0.5),
       axis.ticks.x = element_blank(),
       plot.margin = margin(0.6, 0.6, 0.6, 0.6, "cm"),
-      legend.justification = c(0, 1),
+      legend.justification = c(0,1),
       legend.position = 'none',
       legend.title = element_blank()
     ) +
     expand_limits(y = c(-0.91, 0.91)) +
     labs(y = "CCF", x = NULL)
 
-  cf_plot <- p1 +
-    plot_layout(nrow = 1, byrow = FALSE) +
-    plot_annotation(title = main_title)
+  # use patchwork to be consistent with acf
+  cf_plot <- patchwork::wrap_plots(p1, nrow = 1, byrow = FALSE) +
+    patchwork::plot_annotation(title = main_title)
 
   if (is.null(output)) {
     return(cf_plot)
